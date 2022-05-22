@@ -1,0 +1,37 @@
+<%- include('_includes/header', { siteConfig }); -%>
+
+<div class="about__content pad-0">
+    <h1><%- siteConfig.owner.name %></h1>
+    <p class="about__head"></p>
+    <div class="about__description">
+        <%- html %>
+    </div>
+</div>
+
+<section id="contact" class="mar-b-7">
+    <h3 class="section__title">Elsewhere</h3>
+    <div class="post-list">
+        <a target="_blank" class="post link-github" href="https://github.com/<%- siteConfig.social.github %>">
+            <span class="post__title">Github</span>
+            <span class="post__date"><%- siteConfig.social.github %></span>
+        </a>
+
+        <a target="_blank" class="post link-medium" href="https://medium.com/@<%- siteConfig.social.medium %>">
+            <span class="post__title">Medium</span>
+            <span class="post__date"><%- siteConfig.social.medium %></span>
+        </a>
+
+        <a target="_blank" class="post link-twitter" href="https://twitter.com/<%- siteConfig.social.twitter %>">
+            <span class="post__title">Twitter</span>
+            <span class="post__date"><%- siteConfig.social.twitter %></span>
+        </a>
+
+        <a target="_blank" class="post link-email" href="mailto:<%- siteConfig.owner.email %>">
+            <span class="post__title">Email</span>
+            <span class="post__date"><%- siteConfig.owner.email %></span>
+        </a>
+
+    </div>
+</section>
+
+<%- include('_includes/footer', { siteConfig }) %>

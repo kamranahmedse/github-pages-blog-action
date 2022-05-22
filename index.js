@@ -6,6 +6,8 @@ const showdown = require("showdown");
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 
+const ejs = require('ejs');
+
 const htmlConverter = new showdown.Converter();
 
 const outputDir = path.join(__dirname, './output');
@@ -79,18 +81,25 @@ function prepareTheme() {
     });
 }
 
-function preparePosts() {
-    const postTemplatePath = path.join(outputDir, 'post.html');
+async function copyStaticFiles() {
+    // Prepare the non-page files
+    const nonPageFiles = fs.readdirSync(themePath)
+        .filter(file => !file.endsWith('.ejs') && !file.startsWith('_'));
 
+    nonPageFiles.forEach(nonPageFileName => {
+        const nonPageFilePath = path.join(themePath, nonPageFileName);
+        const outputPath = path.join(outputDir, nonPageFileName);
+
+        fsExtra.copySync(nonPageFilePath, outputPath);
+    });
+}
+
+async function prepareBlogPosts() {
     const postFiles = fs.readdirSync(postsDir);
-    const postTemplate = fs.readFileSync(postTemplatePath, 'utf-8');
+    const posts = [];
 
-    const postsList = [];
-
-    postFiles.forEach(contentFile => {
+    for (let contentFile of postFiles) {
         const contentFilePath = path.join(postsDir, contentFile);
-
-        // Extracts the front-matter
         const content = fs.readFileSync(contentFilePath, 'utf-8');
         const parsed = fm(content);
 
@@ -102,13 +111,7 @@ function preparePosts() {
             date = dayjs(date).format('ddd, MMMM DD, YYYY')
         }
 
-        const html = htmlConverter.makeHtml(parsed.body);
-
-        const populatedTemplate = postTemplate
-            .replace(/=date=/g, date)
-            .replace(/=title=/g, title)
-            .replace(/=body=/g, html)
-            .replace(/(<title>).+?(<\/title>)/, `$1${title}$2`);
+        const postHtml = htmlConverter.makeHtml(parsed.body);
 
         const fullFileName = (permalink || slugify(title).toLowerCase()).replace(/^\//, '');
         const fullFileNameParts = fullFileName.split('/');
@@ -119,14 +122,43 @@ function preparePosts() {
             fsExtra.ensureDirSync(path.join(outputDir, nestedPostDir));
         }
 
-        postsList.push({title, date, permalink: path.join('/', nestedPostDir, fileName)});
+        const postMeta = {
+            title,
+            date,
+            permalink: path.join('/', nestedPostDir, fileName),
+            html: postHtml,
+        };
 
-        fs.writeFileSync(path.join(outputDir, nestedPostDir, `${fileName}.html`), populatedTemplate);
+        const postFileTemplate = path.join(themePath, 'post.ejs');
+        const populatedTemplate = await ejs.renderFile(postFileTemplate, {
+            post: postMeta,
+            siteConfig,
+        });
+
+        fs.writeFileSync(path.join(outputDir, nestedPostDir, `${fileName}.html`), populatedTemplate)
+
+        posts.push(postMeta);
+    }
+
+    return posts;
+}
+
+async function prepareAbout() {
+    const aboutContent = fs.readFileSync(path.join(contentDir, 'about.md'), 'utf-8');
+    const html = htmlConverter.makeHtml(aboutContent);
+
+    const populatedTemplate = await ejs.renderFile(path.join(themePath, 'about.ejs'), {
+        siteConfig,
+        html
     });
 
-    postsList.sort((a, b) => dayjs(b.date).date() - dayjs(a.date).date());
+    fs.writeFileSync(path.join(outputDir, 'about.html'), populatedTemplate);
+}
 
-    const groupedPosts = postsList.reduce((aggMap, postItem) => {
+function prepareHome(posts) {
+    posts.sort((a, b) => dayjs(b.date).date() - dayjs(a.date).date());
+
+    const groupedPosts = posts.reduce((aggMap, postItem) => {
         const year = dayjs(postItem.date).format('YYYY');
 
         aggMap.set(year, [
@@ -137,40 +169,27 @@ function preparePosts() {
         return aggMap;
     }, new Map());
 
-    for (let [year, posts] of groupedPosts) {
-
-    }
+    const homeHtml = ejs.renderFile(path.join(themePath, 'index.ejs'), {
+        siteConfig,
+        groupedPosts,
+    });
 }
 
-function prepareAbout() {
-    const aboutTemplatePath = path.join(outputDir, 'about.html');
+async function main() {
+    await copyStaticFiles();
+    await prepareAbout();
 
-    const aboutContent = fs.readFileSync(path.join(contentDir, 'about.md'), 'utf-8');
-    const aboutHtml = htmlConverter.makeHtml(aboutContent);
+    const posts = await prepareBlogPosts();
 
-    const aboutFileContent = fs
-        .readFileSync(aboutTemplatePath, 'utf-8')
-        .replace('=about=', aboutHtml)
-        .replace(/=site.title=/g, siteConfig.title)
-        .replace(/=site.subtitle=/g, siteConfig.subtitle || '')
-        .replace(/=github=/g, siteConfig.social?.github)
-        .replace(/=twitter=/g, siteConfig.social?.twitter)
-        .replace(/=medium=/g, siteConfig.social?.medium)
-        .replace(/=owner.email=/g, siteConfig.owner?.email)
-        .replace(/=owner.name=/g, siteConfig.owner?.name);
-
-    fs.writeFileSync(aboutTemplatePath, aboutFileContent);
+    prepareHome(posts);
 }
 
-function cleanup() {
-    // delete the posts template file
-    fs.rmSync(path.join(outputDir, 'post.html'));
-}
+main();
 
-prepareTheme();
-preparePosts();
-prepareAbout();
-cleanup();
+// prepareTheme();
+// preparePosts();
+// prepareAbout();
+// cleanup();
 
 
 

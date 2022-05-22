@@ -1,4 +1,4 @@
-=include(header.html)=
+<%- include('_includes/header'); -%>
 
 <header class="intro mar-tb-7">
     <h1 class="intro__head">=site.title=
@@ -9,14 +9,14 @@
 <section id="y 2018" class="mar-b-7">
     <h3 class="section__title">2018</h3>
     <div class="post-list">
-        <a class="post" href="post.html">
+        <a class="post" href="post.ejs">
             <span class="post__title">DNS in One Picture</span>
             <time class="post__date" datetime=" 2018-12-04">Dec 04</time>
         </a>
     </div>
 </section>
 
-=include(revue.html)=
+<%- include('_includes/revue') %>
 
 <section id="y 2015" class="mar-b-7">
     <h3 class="section__title">2015</h3>
@@ -32,4 +32,4 @@
     </div>
 </section>
 
-=include(footer.html)=
+<%- include('_includes/footer') %>
