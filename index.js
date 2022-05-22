@@ -5,16 +5,13 @@ const fm = require("front-matter");
 const showdown = require("showdown");
 const slugify = require('slugify');
 const dayjs = require('dayjs');
-
 const ejs = require('ejs');
 
 const htmlConverter = new showdown.Converter();
 
 const outputDir = path.join(__dirname, './output');
-
 const contentDir = path.join(__dirname, './content');
 const postsDir = path.join(contentDir, './posts');
-
 const themePath = path.join(__dirname, './theme');
 
 const siteConfig = require(path.join(__dirname, './content/site.json'));
@@ -24,7 +21,6 @@ fsExtra.removeSync(outputDir);
 fsExtra.ensureDirSync(outputDir);
 
 async function prepareThemeFiles() {
-    // Prepare the non-page files
     const nonPageFiles = fs.readdirSync(themePath)
         .filter(file => !file.endsWith('.ejs') && !file.startsWith('_'));
 
@@ -49,7 +45,7 @@ async function prepareBlogPosts() {
         const content = fs.readFileSync(contentFilePath, 'utf-8');
         const parsed = fm(content);
 
-        let {title, date, permalink, author} = parsed.attributes;
+        let {title, date, permalink, externalUrl} = parsed.attributes;
 
         if (!date) {
             date = dayjs().format('ddd, MMMM DD, YYYY');
@@ -72,6 +68,7 @@ async function prepareBlogPosts() {
             title,
             date,
             permalink: path.join('/', nestedPostDir, fileName),
+            externalUrl,
             html: postHtml,
         };
 
