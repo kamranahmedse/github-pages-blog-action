@@ -6,9 +6,14 @@ const showdown = require("showdown");
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 
+const htmlConverter = new showdown.Converter();
+
 const outputDir = path.join(__dirname, './output');
-const contentDir = path.join(__dirname, './content/posts');
-const themePath = path.join(__dirname, './themes/whitey');
+
+const contentDir = path.join(__dirname, './content');
+const postsDir = path.join(contentDir, './posts');
+
+const themePath = path.join(__dirname, './theme');
 
 const siteConfig = require(path.join(__dirname, './content/site.json'));
 
@@ -36,12 +41,14 @@ function prepareTheme() {
         });
 
         fileContent = fileContent
-            .replace('=site.title=', siteConfig.title)
-            .replace('=site.subtitle=', siteConfig.subtitle)
-            .replace('=github=', siteConfig.social?.github)
-            .replace('=twitter=', siteConfig.social?.twitter)
-            .replace('=owner.email=', siteConfig.owner?.email)
-            .replace('=owner.name=', siteConfig.owner?.name);
+            .replace(/=site.title=/g, siteConfig.title)
+            .replace(/=site.subtitle=/g, siteConfig.subtitle)
+            .replace(/=github=/g, siteConfig.social?.github)
+            .replace(/=twitter=/g, siteConfig.social?.twitter)
+            .replace(/=medium=/g, siteConfig.social?.medium)
+            .replace(/=owner.email=/g, siteConfig.owner?.email)
+            .replace(/=owner.name=/g, siteConfig.owner?.name)
+            .replace('=currentYear=', dayjs().format('YYYY'));
 
         const outputFilePath = path.join(outputDir, themeFileName);
 
@@ -59,46 +66,70 @@ function prepareTheme() {
     });
 }
 
+function preparePosts() {
+    const postTemplatePath = path.join(outputDir, 'post.html');
+
+    const postFiles = fs.readdirSync(postsDir);
+    const postTemplate = fs.readFileSync(postTemplatePath, 'utf-8');
+
+    postFiles.forEach(contentFile => {
+        const contentFilePath = path.join(postsDir, contentFile);
+
+        // Extracts the front-matter
+        const content = fs.readFileSync(contentFilePath, 'utf-8');
+        const parsed = fm(content);
+
+        let {title, date, permalink, author} = parsed.attributes;
+
+        if (!date) {
+            date = dayjs().format('ddd, MMMM DD, YYYY');
+        } else {
+            date = dayjs(date).format('ddd, MMMM DD, YYYY')
+        }
+
+        const html = htmlConverter.makeHtml(parsed.body);
+
+        const populatedTemplate = postTemplate
+            .replace(/=date=/g, date)
+            .replace(/=title=/g, title)
+            .replace(/=body=/g, html);
+
+        const fullFileName = (permalink || slugify(title).toLowerCase()).replace(/^\//, '');
+        const fullFileNameParts = fullFileName.split('/');
+        const fileName = fullFileNameParts.pop();
+
+        const nestedPostDir = fullFileNameParts.join('/');
+        if (nestedPostDir) {
+            fsExtra.ensureDirSync(path.join(outputDir, nestedPostDir));
+        }
+
+        fs.writeFileSync(path.join(outputDir, nestedPostDir, `${fileName}.html`), populatedTemplate);
+    });
+}
+
+function prepareAbout() {
+    const aboutTemplatePath = path.join(outputDir, 'about.html');
+
+    const aboutContent = fs.readFileSync(path.join(contentDir, 'about.md'), 'utf-8');
+    const aboutHtml = htmlConverter.makeHtml(aboutContent);
+
+    const aboutFileContent = fs
+        .readFileSync(aboutTemplatePath, 'utf-8')
+        .replace('=about=', aboutHtml)
+        .replace(/=site.title=/g, siteConfig.title)
+        .replace(/=site.subtitle=/g, siteConfig.subtitle)
+        .replace(/=github=/g, siteConfig.social?.github)
+        .replace(/=twitter=/g, siteConfig.social?.twitter)
+        .replace(/=medium=/g, siteConfig.social?.medium)
+        .replace(/=owner.email=/g, siteConfig.owner?.email)
+        .replace(/=owner.name=/g, siteConfig.owner?.name);
+
+    fs.writeFileSync(aboutTemplatePath, aboutFileContent);
+}
+
 prepareTheme();
-
-const contentFiles = fs.readdirSync(contentDir);
-const postTemplate = fs.readFileSync(path.join(outputDir, 'post.html'), 'utf-8');
-
-contentFiles.forEach(contentFile => {
-    const contentFilePath = path.join(contentDir, contentFile);
-
-    // Extracts the front-matter
-    const content = fs.readFileSync(contentFilePath, 'utf-8');
-    const parsed = fm(content);
-
-    let {title, date, permalink, author} = parsed.attributes;
-
-    if (!date) {
-        date = dayjs().format('ddd, MMMM DD, YYYY');
-    } else {
-        date = dayjs(date).format('ddd, MMMM DD, YYYY')
-    }
-
-    // Converts the markdown file to HTML
-    const htmlConverter = new showdown.Converter();
-    const html = htmlConverter.makeHtml(parsed.body);
-
-    const populatedTemplate = postTemplate
-        .replace('=date=', date)
-        .replace('=title=', title)
-        .replace('=body=', html);
-
-    const fullFileName = (permalink || slugify(title).toLowerCase()).replace(/^\//, '');
-    const fullFileNameParts = fullFileName.split('/');
-    const fileName = fullFileNameParts.pop();
-
-    const nestedPostDir = fullFileNameParts.join('/');
-    if (nestedPostDir) {
-        fsExtra.ensureDirSync(path.join(outputDir, nestedPostDir));
-    }
-
-    fsExtra.writeFileSync(path.join(outputDir, nestedPostDir, `${fileName}.html`), populatedTemplate);
-});
+preparePosts();
+prepareAbout();
 
 
 
