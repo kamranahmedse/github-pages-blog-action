@@ -9,12 +9,12 @@ const ejs = require('ejs');
 
 const htmlConverter = new showdown.Converter();
 
-const outputDir = path.join(__dirname, './output');
-const contentDir = path.join(__dirname, './content');
+const outputDir = path.join(__dirname, '../output');
+const contentDir = path.join(__dirname, '../content');
+const siteConfig = require(path.join(__dirname, '../content/site.json'));
+
 const postsDir = path.join(contentDir, './posts');
 const themePath = path.join(__dirname, './theme');
-
-const siteConfig = require(path.join(__dirname, './content/site.json'));
 
 // Remove and recreate the output directory
 fsExtra.removeSync(outputDir);
