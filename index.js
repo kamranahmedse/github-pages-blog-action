@@ -127,9 +127,15 @@ function prepareAbout() {
     fs.writeFileSync(aboutTemplatePath, aboutFileContent);
 }
 
+function cleanup() {
+    // delete the posts template file
+    fs.rmSync(path.join(outputDir, 'post.html'));
+}
+
 prepareTheme();
 preparePosts();
 prepareAbout();
+cleanup();
 
 
 
