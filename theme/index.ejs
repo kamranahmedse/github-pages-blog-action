@@ -1,35 +1,37 @@
 <%- include('_includes/header'); -%>
 
 <header class="intro mar-tb-7">
-    <h1 class="intro__head">=site.title=
-        <div class="intro__sub">=site.subtitle=</div>
+    <h1 class="intro__head"><%- siteConfig.title %>
+        <div class="intro__sub"><%- siteConfig.subtitle %></div>
     </h1>
 </header>
 
-<section id="y 2018" class="mar-b-7">
-    <h3 class="section__title">2018</h3>
-    <div class="post-list">
-        <a class="post" href="post.ejs">
-            <span class="post__title">DNS in One Picture</span>
-            <time class="post__date" datetime=" 2018-12-04">Dec 04</time>
-        </a>
-    </div>
-</section>
+<%
+let counter = 0;
+        for (let [year, posts] of groupedPosts.entries() || []) {
+%>
+    <section id="y <%- year %>" class="mar-b-7">
+        <h3 class="section__title"><%- year %></h3>
+        <div class="post-list">
+            <% for (let post of posts) { %>
+                <a class="post" href="post.ejs">
+                    <span class="post__title"><%- post.title %></span>
+                    <time class="post__date" datetime=" 2018-12-04"><%- post.date %></time>
+                </a>
+            <% } %>
+        </div>
+    </section>
+    <% if (counter === 1) { %>
+        <%- include('_includes/revue', { siteConfig }) %>
+    <% } %>
+<%
+    counter++;
+}
+%>
 
-<%- include('_includes/revue') %>
+<!-- If counter never reached 1 -->
+<% if (counter === 0) { %>
+    <%- include('_includes/revue', { siteConfig }) %>
+<% } %>
 
-<section id="y 2015" class="mar-b-7">
-    <h3 class="section__title">2015</h3>
-    <div class="post-list">
-        <a class="post" href="/post.html">
-            <span class="post__title">Creating a Modular Application in Laravel 5.1</span>
-            <time class="post__date" datetime=" 2015-12-03">Dec 03</time>
-        </a>
-        <a class="post" href="/post.html">
-            <span class="post__title">Github took me back in time</span>
-            <time class="post__date" datetime=" 2015-01-01">Jan 01</time>
-        </a>
-    </div>
-</section>
-
-<%- include('_includes/footer') %>
+<%- include('_includes/footer', { siteConfig }) %>

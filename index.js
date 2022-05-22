@@ -23,65 +23,7 @@ const siteConfig = require(path.join(__dirname, './content/site.json'));
 fsExtra.removeSync(outputDir);
 fsExtra.ensureDirSync(outputDir);
 
-function prepareTheme() {
-    const themePageFiles = fs.readdirSync(themePath).filter(file => file.endsWith('.html'));
-
-    // Prepare and place the theme pages
-    themePageFiles.forEach(themeFileName => {
-        const themeFilePath = path.join(themePath, themeFileName);
-        let fileContent = fs.readFileSync(themeFilePath, 'utf-8');
-
-        // Replace partials with actual partial content
-        const matches = fileContent.match(/=include\(.+?\)=/g);
-        matches.forEach(match => {
-            const partialName = match.replace(/=include\((.+?)\)=/, '$1');
-            const partialPath = path.join(themePath, '_includes', partialName);
-
-            const partialContent = fs.readFileSync(partialPath, 'utf-8');
-
-            fileContent = fileContent.replace(match, partialContent);
-        });
-
-        fileContent = fileContent
-            .replace(/=site.title=/g, siteConfig.title)
-            .replace(/=site.subtitle=/g, siteConfig.subtitle || '')
-            .replace(/=github=/g, siteConfig.social?.github)
-            .replace(/=twitter=/g, siteConfig.social?.twitter)
-            .replace(/=medium=/g, siteConfig.social?.medium)
-            .replace(/=owner.email=/g, siteConfig.owner?.email)
-            .replace(/=owner.name=/g, siteConfig.owner?.name)
-            .replace(/=seo.title=/g, siteConfig.seo?.title)
-            .replace(/=seo.description=/g, siteConfig.seo?.description)
-            .replace(/=seo.keywords=/g, siteConfig.seo?.keywords?.join(','))
-            .replace(/=currentYear=/g, dayjs().format('YYYY'));
-
-        const outputFilePath = path.join(outputDir, themeFileName);
-
-        const revueUsername = siteConfig.newsletter?.revueUsername;
-        if (revueUsername) {
-            fileContent = fileContent
-                .replace(/=newsletter.revueUsername=/g, revueUsername)
-                .replace(/=newsletter.currentCount=/g, siteConfig.newsletter?.currentCount);
-        } else {
-            // Hide the newsletter
-            fileContent = fileContent.replace(/=newsletter=/g, 'none');
-        }
-
-        fs.writeFileSync(outputFilePath, fileContent);
-    });
-
-    // Prepare the non-page files
-    const nonPageFiles = fs.readdirSync(themePath).filter(file => !file.endsWith('.html') && !file.startsWith('_'));
-
-    nonPageFiles.forEach(nonPageFileName => {
-        const nonPageFilePath = path.join(themePath, nonPageFileName);
-        const outputPath = path.join(outputDir, nonPageFileName);
-
-        fsExtra.copySync(nonPageFilePath, outputPath);
-    });
-}
-
-async function copyStaticFiles() {
+async function prepareThemeFiles() {
     // Prepare the non-page files
     const nonPageFiles = fs.readdirSync(themePath)
         .filter(file => !file.endsWith('.ejs') && !file.startsWith('_'));
@@ -155,7 +97,7 @@ async function prepareAbout() {
     fs.writeFileSync(path.join(outputDir, 'about.html'), populatedTemplate);
 }
 
-function prepareHome(posts) {
+async function prepareHome(posts) {
     posts.sort((a, b) => dayjs(b.date).date() - dayjs(a.date).date());
 
     const groupedPosts = posts.reduce((aggMap, postItem) => {
@@ -169,27 +111,27 @@ function prepareHome(posts) {
         return aggMap;
     }, new Map());
 
-    const homeHtml = ejs.renderFile(path.join(themePath, 'index.ejs'), {
+    const homeHtml = await ejs.renderFile(path.join(themePath, 'index.ejs'), {
         siteConfig,
         groupedPosts,
     });
+
+    fs.writeFileSync(path.join(outputDir, 'index.html'), homeHtml);
 }
 
 async function main() {
-    await copyStaticFiles();
+    await prepareThemeFiles();
     await prepareAbout();
 
     const posts = await prepareBlogPosts();
 
-    prepareHome(posts);
+    await prepareHome(posts);
 }
 
 main();
 
 // prepareTheme();
 // preparePosts();
-// prepareAbout();
-// cleanup();
 
 
 
