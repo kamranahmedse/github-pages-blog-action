@@ -3,10 +3,14 @@ const fsExtra = require('fs-extra');
 const path = require("path");
 const fm = require("front-matter");
 const showdown = require("showdown");
+const slugify = require('slugify');
+const dayjs = require('dayjs');
 
 const outputDir = path.join(__dirname, './output');
 const contentDir = path.join(__dirname, './content/posts');
 const themePath = path.join(__dirname, './themes/whitey');
+
+const siteConfig = require(path.join(__dirname, './content/site.json'));
 
 // Remove and recreate the output directory
 fsExtra.removeSync(outputDir);
@@ -31,6 +35,14 @@ function prepareTheme() {
             fileContent = fileContent.replace(match, partialContent);
         });
 
+        fileContent = fileContent
+            .replace('=site.title=', siteConfig.title)
+            .replace('=site.subtitle=', siteConfig.subtitle)
+            .replace('=github=', siteConfig.social?.github)
+            .replace('=twitter=', siteConfig.social?.twitter)
+            .replace('=owner.email=', siteConfig.owner?.email)
+            .replace('=owner.name=', siteConfig.owner?.name);
+
         const outputFilePath = path.join(outputDir, themeFileName);
 
         fs.writeFileSync(outputFilePath, fileContent);
@@ -50,6 +62,8 @@ function prepareTheme() {
 prepareTheme();
 
 const contentFiles = fs.readdirSync(contentDir);
+const postTemplate = fs.readFileSync(path.join(outputDir, 'post.html'), 'utf-8');
+
 contentFiles.forEach(contentFile => {
     const contentFilePath = path.join(contentDir, contentFile);
 
@@ -57,13 +71,33 @@ contentFiles.forEach(contentFile => {
     const content = fs.readFileSync(contentFilePath, 'utf-8');
     const parsed = fm(content);
 
-    const {title, date, author, slug} = parsed.attributes;
+    let {title, date, permalink, author} = parsed.attributes;
+
+    if (!date) {
+        date = dayjs().format('ddd, MMMM DD, YYYY');
+    } else {
+        date = dayjs(date).format('ddd, MMMM DD, YYYY')
+    }
 
     // Converts the markdown file to HTML
     const htmlConverter = new showdown.Converter();
     const html = htmlConverter.makeHtml(parsed.body);
 
-    // console.log(html);
+    const populatedTemplate = postTemplate
+        .replace('=date=', date)
+        .replace('=title=', title)
+        .replace('=body=', html);
+
+    const fullFileName = (permalink || slugify(title).toLowerCase()).replace(/^\//, '');
+    const fullFileNameParts = fullFileName.split('/');
+    const fileName = fullFileNameParts.pop();
+
+    const nestedPostDir = fullFileNameParts.join('/');
+    if (nestedPostDir) {
+        fsExtra.ensureDirSync(path.join(outputDir, nestedPostDir));
+    }
+
+    fsExtra.writeFileSync(path.join(outputDir, nestedPostDir, `${fileName}.html`), populatedTemplate);
 });
 
 

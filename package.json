@@ -9,8 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.11.2",
     "front-matter": "^4.0.2",
     "fs-extra": "^10.1.0",
-    "showdown": "^2.1.0"
+    "showdown": "^2.1.0",
+    "slugify": "^1.6.5"
   }
 }
