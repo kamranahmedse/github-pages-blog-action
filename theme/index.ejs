@@ -8,20 +8,22 @@
 
 <%
 let counter = 0;
-        for (let [year, posts] of groupedPosts.entries() || []) {
+const years = Array.from(groupedPosts.keys()).sort((a, b) => b - a) || [];
+const mid = parseInt((years.length / 2) || 1, 10) - 1;
+        for (let year of years) {
 %>
     <section id="y <%- year %>" class="mar-b-7">
         <h3 class="section__title"><%- year %></h3>
         <div class="post-list">
-            <% for (let post of posts) { %>
-                <a class="post" href="post.ejs">
+            <% for (let post of groupedPosts.get(year)) { %>
+                <a class="post" href="<%- post.permalink %>">
                     <span class="post__title"><%- post.title %></span>
                     <time class="post__date" datetime=" 2018-12-04"><%- post.date %></time>
                 </a>
             <% } %>
         </div>
     </section>
-    <% if (counter === 1) { %>
+    <% if (counter === mid) { %>
         <%- include('_includes/revue', { siteConfig }) %>
     <% } %>
 <%

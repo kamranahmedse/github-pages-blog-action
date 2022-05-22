@@ -130,8 +130,4 @@ async function main() {
 
 main();
 
-// prepareTheme();
-// preparePosts();
-
-
 
