@@ -34,6 +34,10 @@ async function prepareThemeFiles() {
 
         fsExtra.copySync(nonPageFilePath, outputPath);
     });
+
+    if (siteConfig.cname) {
+        fs.writeFileSync(path.join(outputDir, 'CNAME'), siteConfig.cname);
+    }
 }
 
 async function prepareBlogPosts() {
@@ -119,13 +123,17 @@ async function prepareHome(posts) {
     fs.writeFileSync(path.join(outputDir, 'index.html'), homeHtml);
 }
 
+async function copyStaticAssets() {
+    const staticAssetsPath = path.join(contentDir, 'static');
+    fsExtra.copySync(staticAssetsPath, outputDir);
+}
+
 async function main() {
     await prepareThemeFiles();
     await prepareAbout();
-
     const posts = await prepareBlogPosts();
-
     await prepareHome(posts);
+    await copyStaticAssets();
 }
 
 main();
