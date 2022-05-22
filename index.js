@@ -85,6 +85,8 @@ function preparePosts() {
     const postFiles = fs.readdirSync(postsDir);
     const postTemplate = fs.readFileSync(postTemplatePath, 'utf-8');
 
+    const postsList = [];
+
     postFiles.forEach(contentFile => {
         const contentFilePath = path.join(postsDir, contentFile);
 
@@ -117,8 +119,27 @@ function preparePosts() {
             fsExtra.ensureDirSync(path.join(outputDir, nestedPostDir));
         }
 
+        postsList.push({title, date, permalink: path.join('/', nestedPostDir, fileName)});
+
         fs.writeFileSync(path.join(outputDir, nestedPostDir, `${fileName}.html`), populatedTemplate);
     });
+
+    postsList.sort((a, b) => dayjs(b.date).date() - dayjs(a.date).date());
+
+    const groupedPosts = postsList.reduce((aggMap, postItem) => {
+        const year = dayjs(postItem.date).format('YYYY');
+
+        aggMap.set(year, [
+            ...aggMap.get(year) || [],
+            postItem,
+        ]);
+
+        return aggMap;
+    }, new Map());
+
+    for (let [year, posts] of groupedPosts) {
+
+    }
 }
 
 function prepareAbout() {
