@@ -14,7 +14,7 @@ const contentDir = path.join(__dirname, '../content');
 const siteConfig = require(path.join(__dirname, '../content/site.json'));
 
 const postsDir = path.join(contentDir, './posts');
-const themePath = path.join(__dirname, './theme');
+const themePath = path.join(__dirname, '../theme');
 
 // Remove and recreate the output directory
 fsExtra.removeSync(outputDir);
