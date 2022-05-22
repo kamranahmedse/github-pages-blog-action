@@ -1,3 +1,7 @@
+.none {
+    display: none !important;
+}
+
 .text-center {
     text-align: center
 }
@@ -630,19 +634,6 @@ footer {
     display: flex
 }
 
-.about__image {
-    margin: 0;
-    display: block;
-    width: 35%;
-    height: 100%
-}
-
-@media screen and (max-width: 544px) {
-    .about__image {
-        display: none
-    }
-}
-
 .about__content {
     padding: 0;
 }
@@ -791,6 +782,24 @@ pre .lineno {
     display: flex;
     flex-direction: column;
     background-color: #FAFAFA
+}
+
+#mc_embed_signup.twitter-signup {
+    background: #ffa;
+    border: none;
+    font-size: 16px;
+}
+
+.twitter-signup-text {
+    text-align: center;
+    color: black;
+}
+
+.twitter-signup-text a {
+    font-weight: 600;
+    color: #3939bd;
+    text-decoration: none;
+    border-bottom: 1px solid blue;
 }
 
 .mc-title-container {

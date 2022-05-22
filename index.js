@@ -42,15 +42,28 @@ function prepareTheme() {
 
         fileContent = fileContent
             .replace(/=site.title=/g, siteConfig.title)
-            .replace(/=site.subtitle=/g, siteConfig.subtitle)
+            .replace(/=site.subtitle=/g, siteConfig.subtitle || '')
             .replace(/=github=/g, siteConfig.social?.github)
             .replace(/=twitter=/g, siteConfig.social?.twitter)
             .replace(/=medium=/g, siteConfig.social?.medium)
             .replace(/=owner.email=/g, siteConfig.owner?.email)
             .replace(/=owner.name=/g, siteConfig.owner?.name)
-            .replace('=currentYear=', dayjs().format('YYYY'));
+            .replace(/=seo.title=/g, siteConfig.seo?.title)
+            .replace(/=seo.description=/g, siteConfig.seo?.description)
+            .replace(/=seo.keywords=/g, siteConfig.seo?.keywords?.join(','))
+            .replace(/=currentYear=/g, dayjs().format('YYYY'));
 
         const outputFilePath = path.join(outputDir, themeFileName);
+
+        const revueUsername = siteConfig.newsletter?.revueUsername;
+        if (revueUsername) {
+            fileContent = fileContent
+                .replace(/=newsletter.revueUsername=/g, revueUsername)
+                .replace(/=newsletter.currentCount=/g, siteConfig.newsletter?.currentCount);
+        } else {
+            // Hide the newsletter
+            fileContent = fileContent.replace(/=newsletter=/g, 'none');
+        }
 
         fs.writeFileSync(outputFilePath, fileContent);
     });
@@ -92,7 +105,8 @@ function preparePosts() {
         const populatedTemplate = postTemplate
             .replace(/=date=/g, date)
             .replace(/=title=/g, title)
-            .replace(/=body=/g, html);
+            .replace(/=body=/g, html)
+            .replace(/(<title>).+?(<\/title>)/, `$1${title}$2`);
 
         const fullFileName = (permalink || slugify(title).toLowerCase()).replace(/^\//, '');
         const fullFileNameParts = fullFileName.split('/');
@@ -117,7 +131,7 @@ function prepareAbout() {
         .readFileSync(aboutTemplatePath, 'utf-8')
         .replace('=about=', aboutHtml)
         .replace(/=site.title=/g, siteConfig.title)
-        .replace(/=site.subtitle=/g, siteConfig.subtitle)
+        .replace(/=site.subtitle=/g, siteConfig.subtitle || '')
         .replace(/=github=/g, siteConfig.social?.github)
         .replace(/=twitter=/g, siteConfig.social?.twitter)
         .replace(/=medium=/g, siteConfig.social?.medium)
