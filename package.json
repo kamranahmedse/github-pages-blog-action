@@ -2,22 +2,54 @@
   "name": "@kamranahmedse/github-pages-blog-action",
   "version": "0.0.1",
   "description": "Create good looking blog from your markdown files in a GitHub repository\n\n",
-  "main": "src/main.js",
+  "main": "lib/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamranahmedse/github-pages-blog-action.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "markdown",
+    "blog",
+    "github pages"
+  ],
   "author": "Kamran Ahmed <kamranahmed.se@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.8.2",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.0.3",
-    "@kamranahmedse/github-pages-blog-action": "^0.0.1",
     "dayjs": "^1.11.2",
     "ejs": "^3.1.8",
     "front-matter": "^4.0.2",
     "fs-extra": "^10.1.0",
     "showdown": "^2.1.0",
     "slugify": "^1.6.5"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.1",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^17.0.35",
+    "@types/showdown": "^2.0.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "@vercel/ncc": "^0.33.4",
+    "eslint": "^8.16.0",
+    "eslint-plugin-github": "^4.3.6",
+    "eslint-plugin-jest": "^26.2.2",
+    "jest": "^28.1.0",
+    "js-yaml": "^4.1.0",
+    "prettier": "2.6.2",
+    "ts-jest": "^28.0.3",
+    "typescript": "^4.7.2"
   }
 }

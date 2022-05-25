@@ -3,7 +3,7 @@ description: 'This action allows you to create a blog from your markdown files a
 author: 'Kamran Ahmed <kamranahmed.se@gmail.com>'
 runs:
   using: 'node16'
-  main: 'src/main.js'
+  main: 'dist/index.js'
 branding:
   icon: 'git-commit'
   color: 'orange'
