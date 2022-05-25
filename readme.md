@@ -1,6 +1,8 @@
 # github-pages-blog-action
 Create blog from your markdown files in GitHub / [Sample Blog](https://kamranahmed.info)
 
+![](./.github/assets/split.png)
+
 ## Setting Up the Blog
 
 Create a repository on GitHub to hold your blog content with the following directory structure:
@@ -75,6 +77,8 @@ For the `newsletter`, you can remove the object if you don't have [revue newslet
 ### Static Assets
 
 The contents of the `static` folder will simply be copied at the root of your blog and will be accessible via `http://[blogurl]/filename`
+
+![](./.github/assets/split.png)
 
 ## Setting Up GitHub Action
 
