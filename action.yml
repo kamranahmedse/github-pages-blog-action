@@ -21,7 +21,7 @@ inputs:
   branch:
     description: 'This is the branch you wish to deploy to, for example gh-pages or docs.'
     required: false
-    default: 'github-pages'
+    default: 'gh-pages'
 
 outputs:
   deployment-status:
