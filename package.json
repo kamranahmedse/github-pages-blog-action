@@ -1,13 +1,13 @@
 {
-  "name": "pretty-blog",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/theme.js",
+  "name": "@kamranahmedse/github-pages-blog-action",
+  "version": "0.0.1",
+  "description": "Create good looking blog from your markdown files in a GitHub repository\n\n",
+  "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Kamran Ahmed <kamranahmed.se@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.8.2",
     "@actions/exec": "^1.1.1",
