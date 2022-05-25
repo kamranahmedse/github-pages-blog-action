@@ -1,7 +1,18 @@
-# github-pages-blog-action
-Create blog from your markdown files in GitHub / [Sample Blog](https://kamranahmed.info)
+<p align="center">
+  <img height="150" src="./.github/assets/flash.png" />
+  <h2 align="center">Github Pages Blog</h2>
+  <p align="center">Create good looking blog from your markdown files on GitHub<p>
+  <p align="center">
+    <a href="https://roadmap.sh/roadmaps">
+    	<img src="https://img.shields.io/badge/-Sample%20Blog%20‎ ‎ -0a0a0a.svg?style=flat&colorA=0a0a0a" alt="roadmaps" />
+    </a>
+    <a href="https://roadmap.sh/roadmaps">
+    	<img src="https://img.shields.io/badge/License-MIT-0a0a0a.svg?style=flat&colorA=0a0a0a" alt="roadmaps" />
+    </a>
+  </p>
+</p>
 
-![](./.github/assets/split.png)
+<br>
 
 ## Setting Up the Blog
 
@@ -91,10 +102,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Deploy 
+      - name: Deploy
         uses: kamranahmedse/github-pages-blog-action@master
         with:
           branch: gh-pages # Optional branch for GitHub Pages
