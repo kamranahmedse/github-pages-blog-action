@@ -3,11 +3,11 @@
   <h2 align="center">Github Pages Blog</h2>
   <p align="center">Create good looking blog from your markdown files on GitHub<p>
   <p align="center">
-    <a href="https://roadmap.sh/roadmaps">
-    	<img src="https://img.shields.io/badge/-Sample%20Blog%20‎ ‎ -0a0a0a.svg?style=flat&colorA=0a0a0a" alt="roadmaps" />
+    <a href="kamranahmed.info">
+    	<img src="https://img.shields.io/badge/-Sample%20Blog%20‎ ‎ -0a0a0a.svg?style=flat&colorA=0a0a0a" alt="kamranahmed.info" />
     </a>
-    <a href="https://roadmap.sh/roadmaps">
-    	<img src="https://img.shields.io/badge/License-MIT-0a0a0a.svg?style=flat&colorA=0a0a0a" alt="roadmaps" />
+    <a href="license">
+    	<img src="https://img.shields.io/badge/License-MIT-0a0a0a.svg?style=flat&colorA=0a0a0a" alt="license mit" />
     </a>
   </p>
 </p>
