@@ -1,6 +1,6 @@
 {
   "name": "@kamranahmedse/github-pages-blog-action",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create good looking blog from your markdown files in a GitHub repository\n\n",
   "main": "lib/main.js",
   "scripts": {

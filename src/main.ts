@@ -1,7 +1,7 @@
 import { getInput } from '@actions/core';
 import { run } from './runner';
 import path from 'path';
-import github from '@actions/github';
+import * as github from '@actions/github';
 
 const { pusher, repository } = github.context.payload;
 
