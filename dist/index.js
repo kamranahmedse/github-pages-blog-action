@@ -314,7 +314,7 @@ function prepareTheme(configuration) {
                     }
                     const postHtml = htmlConverter.makeHtml(parsed.body);
                     const fullFileName = (permalink || (0, slugify_1.default)(title).toLowerCase()).replace(/^\//, '');
-                    const fullFileNameParts = fullFileName.split('/');
+                    const fullFileNameParts = fullFileName.replace(/\/$/, '').split('/');
                     const fileName = fullFileNameParts.pop() || '';
                     const nestedPostDir = fullFileNameParts.join('/');
                     if (nestedPostDir) {

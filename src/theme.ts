@@ -85,7 +85,7 @@ export async function prepareTheme(configuration: ConfigurationType) {
   async function prepareBlogPosts() {
     info('Preparing blog posts');
     const postFiles = fs.readdirSync(postsDir);
-    const posts = [];
+    const posts: PostType[] = [];
 
     for (let contentFile of postFiles) {
       const contentFilePath = path.join(postsDir, contentFile);
@@ -103,7 +103,7 @@ export async function prepareTheme(configuration: ConfigurationType) {
       const postHtml = htmlConverter.makeHtml(parsed.body);
 
       const fullFileName = (permalink || slugify(title).toLowerCase()).replace(/^\//, '');
-      const fullFileNameParts = fullFileName.split('/');
+      const fullFileNameParts = fullFileName.replace(/\/$/, '').split('/');
       const fileName = fullFileNameParts.pop() || '';
 
       const nestedPostDir = fullFileNameParts.join('/');
