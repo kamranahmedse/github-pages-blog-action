@@ -38,6 +38,7 @@ type SiteConfigType = {
     medium: string;
   };
   newsletter: {
+    showTwitterBanner?: boolean;
     currentCount: string;
     revueUsername: string;
   };

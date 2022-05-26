@@ -24,7 +24,7 @@ const mid = parseInt((years.length / 2) || 1, 10) - 1;
         </div>
     </section>
     <% if (counter === mid) { %>
-        <%- include('_includes/revue', { siteConfig }) %>
+        <%- include('_includes/newsletter', { siteConfig }) %>
     <% } %>
 <%
     counter++;
@@ -33,7 +33,7 @@ const mid = parseInt((years.length / 2) || 1, 10) - 1;
 
 <!-- If counter never reached 1 -->
 <% if (counter === 0) { %>
-    <%- include('_includes/revue', { siteConfig }) %>
+    <%- include('_includes/newsletter', { siteConfig }) %>
 <% } %>
 
 <%- include('_includes/footer', { siteConfig }) %>
