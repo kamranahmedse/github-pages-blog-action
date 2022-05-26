@@ -5,6 +5,8 @@ export async function deploy(configuration: ConfigurationType) {
   const outputPath = configuration.outputDir;
 
   await execute(`git init`, outputPath);
+  await execute(`git config user.name "${configuration.pusherName}"`, outputPath);
+  await execute(`git config user.email "${configuration.pusherEmail}"`, outputPath);
   await execute(`git remote add origin ${configuration.repoUrl}`, outputPath);
   await execute(`git checkout -b ${configuration.branch}`, outputPath);
   await execute(`git add .`, outputPath);

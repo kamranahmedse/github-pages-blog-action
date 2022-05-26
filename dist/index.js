@@ -22,6 +22,8 @@ function deploy(configuration) {
     return __awaiter(this, void 0, void 0, function* () {
         const outputPath = configuration.outputDir;
         yield (0, execute_1.execute)(`git init`, outputPath);
+        yield (0, execute_1.execute)(`git config user.name "${configuration.pusherName}"`, outputPath);
+        yield (0, execute_1.execute)(`git config user.email "${configuration.pusherEmail}"`, outputPath);
         yield (0, execute_1.execute)(`git remote add origin ${configuration.repoUrl}`, outputPath);
         yield (0, execute_1.execute)(`git checkout -b ${configuration.branch}`, outputPath);
         yield (0, execute_1.execute)(`git add .`, outputPath);
