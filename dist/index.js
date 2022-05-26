@@ -196,7 +196,7 @@ const outputDir = path_1.default.join(repoPath, 'output');
     repoUrl: `https://x-access-token:${token}@${hostname}/${repositoryName}.git`,
     outputDir: outputDir,
     branch,
-    themeDir: path_1.default.join(__dirname, './theme')
+    themeDir: path_1.default.join(__dirname, '../theme')
 });
 
 
@@ -275,7 +275,7 @@ function prepareTheme(configuration) {
         const repoPath = configuration.repoPath;
         const siteConfig = require(path_1.default.join(configuration.repoPath, './site.json'));
         const postsDir = path_1.default.join(configuration.repoPath, './posts');
-        const themePath = path_1.default.join(__dirname, './theme');
+        const themePath = path_1.default.join(__dirname, '../theme');
         function prepareThemeFiles() {
             return __awaiter(this, void 0, void 0, function* () {
                 (0, core_1.info)('Preparing theme files');

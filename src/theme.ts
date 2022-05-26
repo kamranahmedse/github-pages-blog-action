@@ -32,7 +32,7 @@ export async function prepareTheme(configuration: ConfigurationType) {
 
   const siteConfig = require(path.join(configuration.repoPath, './site.json'));
   const postsDir = path.join(configuration.repoPath, './posts');
-  const themePath = path.join(__dirname, './theme');
+  const themePath = path.join(__dirname, '../theme');
 
   async function prepareThemeFiles() {
     info('Preparing theme files');

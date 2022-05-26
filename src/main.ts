@@ -22,5 +22,5 @@ run({
   repoUrl: `https://x-access-token:${token}@${hostname}/${repositoryName}.git`,
   outputDir: outputDir,
   branch,
-  themeDir: path.join(__dirname, './theme')
+  themeDir: path.join(__dirname, '../theme')
 });
