@@ -146,6 +146,12 @@ export async function prepareTheme(configuration: ConfigurationType) {
     fs.writeFileSync(path.join(outputDir, 'about.html'), populatedTemplate);
   }
 
+  async function prepareStaticPages() {
+    info('Preparing 404 page');
+    const populatedTemplate = await ejs.renderFile(path.join(themePath, '404.ejs'), { siteConfig });
+    fs.writeFileSync(path.join(outputDir, '404.html'), populatedTemplate);
+  }
+
   async function prepareHome(posts: PostType[]) {
     info('Preparing homepage');
     posts.sort((a, b) => dayjs(b.date).date() - dayjs(a.date).date());
@@ -178,6 +184,7 @@ export async function prepareTheme(configuration: ConfigurationType) {
 
   await prepareThemeFiles();
   await prepareAbout();
+  await prepareStaticPages();
   const posts = await prepareBlogPosts();
   await prepareHome(posts);
   await copyStaticAssets();
