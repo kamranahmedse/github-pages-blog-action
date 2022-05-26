@@ -24,13 +24,39 @@ type PostType = {
   html: string;
 };
 
+type SiteConfigType = {
+  title: string;
+  subtitle: string;
+  baseUrl: string;
+  owner: {
+    name: string;
+    email: string;
+  };
+  social: {
+    github: string;
+    twitter: string;
+    medium: string;
+  };
+  newsletter: {
+    currentCount: string;
+    revueUsername: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+    author: string;
+    keywords: string[];
+  };
+  cname: string;
+};
+
 const htmlConverter = new showdown.Converter();
 
 export async function prepareTheme(configuration: ConfigurationType) {
   const outputDir = configuration.outputDir;
   const repoPath = configuration.repoPath;
 
-  const siteConfig = require(path.join(configuration.repoPath, './site.json'));
+  const siteConfig: SiteConfigType = require(path.join(configuration.repoPath, './site.json'));
   const postsDir = path.join(configuration.repoPath, './posts');
   const themePath = path.join(__dirname, '../theme');
 
