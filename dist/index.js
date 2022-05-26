@@ -350,6 +350,13 @@ function prepareTheme(configuration) {
                 fs_1.default.writeFileSync(path_1.default.join(outputDir, 'about.html'), populatedTemplate);
             });
         }
+        function prepareStaticPages() {
+            return __awaiter(this, void 0, void 0, function* () {
+                (0, core_1.info)('Preparing 404 page');
+                const populatedTemplate = yield ejs_1.default.renderFile(path_1.default.join(themePath, '404.ejs'), { siteConfig });
+                fs_1.default.writeFileSync(path_1.default.join(outputDir, '404.html'), populatedTemplate);
+            });
+        }
         function prepareHome(posts) {
             return __awaiter(this, void 0, void 0, function* () {
                 (0, core_1.info)('Preparing homepage');
@@ -378,6 +385,7 @@ function prepareTheme(configuration) {
         fs_extra_1.default.ensureDirSync(configuration.outputDir);
         yield prepareThemeFiles();
         yield prepareAbout();
+        yield prepareStaticPages();
         const posts = yield prepareBlogPosts();
         yield prepareHome(posts);
         yield copyStaticAssets();
