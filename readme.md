@@ -112,7 +112,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy
-        uses: kamranahmedse/github-pages-blog-action@master
+        uses: kamranahmedse/github-pages-blog-action@v0.0.10
         with:
           branch: gh-pages # Optional branch for GitHub Pages
 ```
