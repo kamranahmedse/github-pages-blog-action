@@ -14,6 +14,12 @@
 
 <br>
 
+## Usage Example
+
+* [Codebase](https://github.com/kamranahmedse/kamranahmedse.github.io)
+* [Live Blog](https://kamranahmed.info)
+
+
 ## Setting Up the Blog
 
 Create a repository on GitHub to hold your blog content with the following directory structure:
