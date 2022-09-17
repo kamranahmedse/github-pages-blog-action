@@ -16,24 +16,16 @@ const mid = parseInt((years.length / 2) || 1, 10) - 1;
         <h3 class="section__title"><%- year %></h3>
         <div class="post-list">
             <% for (let post of groupedPosts.get(year)) { %>
-                <a class="post" href="<%- post.externalUrl || post.permalink %>" target="<%- post.externalUrl ? '_blank': '_self' %>">
+                <a class="post" href="<%- post.externalUrl || post.permalink.replace(/^\//u, '') %>" target="<%- post.externalUrl ? '_blank': '_self' %>">
                     <span class="post__title"><%- post.title %></span>
                     <time class="post__date" datetime=" 2018-12-04"><%- post.date %></time>
                 </a>
             <% } %>
         </div>
     </section>
-    <% if (counter === mid) { %>
-        <%- include('_includes/newsletter', { siteConfig }) %>
-    <% } %>
 <%
     counter++;
 }
 %>
-
-<!-- If counter never reached 1 -->
-<% if (counter === 0) { %>
-    <%- include('_includes/newsletter', { siteConfig }) %>
-<% } %>
 
 <%- include('_includes/footer', { siteConfig }) %>

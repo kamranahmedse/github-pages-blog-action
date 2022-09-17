@@ -441,7 +441,7 @@
 
 body {
     margin: auto;
-    max-width: 39rem;
+    max-width: 80rem;
     padding: 1rem;
     background-color: #fff;
     color: #333;
@@ -541,9 +541,8 @@ table {
     border-collapse: collapse;
     min-height: .01%;
     overflow-x: auto;
-    width: 100%;
     max-width: 100%;
-    font-family: "Alegreya", "Times New Roman", Georgia, serif
+    font-family: "Alegreya", "Times New Roman", Georgia, serif;
 }
 
 table tbody tr:nth-child(odd) {
@@ -568,7 +567,8 @@ table th {
 table td {
     border-top: 1px solid #E8E8E8;
     border-left: 1px solid #E8E8E8;
-    text-align: left
+    text-align: left;
+    vertical-align: top;
 }
 
 .nav {
@@ -747,9 +747,9 @@ code {
     background-color: #FAFAFA;
     color: #333;
     font-family: "Roboto Mono", monospace;
-    font-size: .95rem;
+    font-size: .75rem;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 200;
     letter-spacing: 1px
 }
 
