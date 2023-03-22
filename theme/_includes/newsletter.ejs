@@ -1,4 +1,4 @@
-<% if (siteConfig.newsletter?.revueUsername && !siteConfig.newsletter.showTwitterBanner) { %>
+<% if (siteConfig.newsletter?.revueUsername && !siteConfig.newsletter?.showTwitterBanner) { %>
     <section id="mc_embed_signup" class="mar-tb-7">
         <div class="mc-title-container">
             <span class="mc-title-container__main">Subscribe for the Newsletter</span>
@@ -19,11 +19,11 @@
             <button class="mc-form__button" type="submit" name="subscribe" id="mc-embedded-subscribe">Subscribe</button>
         </form>
     </section>
-<% } else if (siteConfig.newsletter.showTwitterBanner) { %>
+<% } else if (siteConfig.newsletter?.showTwitterBanner && siteConfig.social?.twitter) { %>
     <section id="mc_embed_signup" class="mar-tb-7 twitter-signup">
         <div class="mc-title-container"></div>
 
-        <p class="mar-0 twitter-signup-text">👋 <a href="http://twitter.com/<%- siteConfig.social?.twitter; %>"
+        <p class="mar-0 twitter-signup-text">👋 <a href="https://twitter.com/<%- siteConfig.social?.twitter; %>"
                                                    target="_blank">Follow me on
                 twitter</a> for the updates. </p>
     </section>
