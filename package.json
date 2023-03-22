@@ -1,5 +1,5 @@
 {
-  "name": "@kamranahmedse/github-pages-blog-action",
+  "name": "@poseen/github-pages-blog-action",
   "version": "0.0.11b",
   "description": "Create good looking blog from your markdown files in a GitHub repository\n\n",
   "main": "lib/main.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kamranahmedse/github-pages-blog-action.git"
+    "url": "git+https://github.com/poseen/github-pages-blog-action.git"
   },
   "keywords": [
     "actions",
@@ -23,7 +23,7 @@
     "blog",
     "github pages"
   ],
-  "author": "Kamran Ahmed <kamranahmed.se@gmail.com>",
+  "author": "Tibor Viragh <viraght@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.8.2",
@@ -53,7 +53,7 @@
     "typescript": "^4.7.2"
   },
   "bugs": {
-    "url": "https://github.com/kamranahmedse/github-pages-blog-action/issues"
+    "url": "https://github.com/poseen/github-pages-blog-action/issues"
   },
-  "homepage": "https://github.com/kamranahmedse/github-pages-blog-action#readme"
+  "homepage": "https://github.com/poseen/github-pages-blog-action#readme"
 }
