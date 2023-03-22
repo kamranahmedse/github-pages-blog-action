@@ -1,6 +1,6 @@
 {
   "name": "@kamranahmedse/github-pages-blog-action",
-  "version": "0.0.10",
+  "version": "0.0.11b",
   "description": "Create good looking blog from your markdown files in a GitHub repository\n\n",
   "main": "lib/main.js",
   "scripts": {
@@ -51,5 +51,9 @@
     "prettier": "2.6.2",
     "ts-jest": "^28.0.3",
     "typescript": "^4.7.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/kamranahmedse/github-pages-blog-action/issues"
+  },
+  "homepage": "https://github.com/kamranahmedse/github-pages-blog-action#readme"
 }
