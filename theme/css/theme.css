@@ -422,6 +422,10 @@
     color: #00A3EC !important
 }
 
+.link-linkedin:hover {
+    color: #0073b1 !important
+}
+
 .link-email:hover {
     color: #FF554A !important
 }

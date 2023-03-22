@@ -29,8 +29,17 @@
         <a href="/about">About</a>
     </div>
     <div class="nav__right">
+<% if (siteConfig.social?.github) { %>
         <a target="_blank" href="https://github.com/<%- siteConfig.social.github %>" class="link-github">GitHub</a>
+<% } %>
+<% if (siteConfig.social?.twitter) { %>
         <a target="_blank" href="https://twitter.com/<%- siteConfig.social.twitter %>" class="link-twitter">Twitter</a>
+<% } %>
+<% if (siteConfig.social?.linkedin) { %>
+        <a target="_blank" href="https://www.linkedin.com/in/<%- siteConfig.social.linkedin %>" class="link-linkedin">Twitter</a>
+<% } %>
+<% if (siteConfig.owner?.email) { %>
         <a href="mailto:<%- siteConfig.owner.email %>" class="link-email">Email</a>
+<% } %>
     </div>
 </nav>

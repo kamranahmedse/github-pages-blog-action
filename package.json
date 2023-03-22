@@ -1,6 +1,6 @@
 {
-  "name": "@poseen/github-pages-blog-action",
-  "version": "0.0.11b",
+  "name": "@kamranahmedse/github-pages-blog-action",
+  "version": "0.0.10",
   "description": "Create good looking blog from your markdown files in a GitHub repository\n\n",
   "main": "lib/main.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poseen/github-pages-blog-action.git"
+    "url": "git+https://github.com/kamranahmedse/github-pages-blog-action.git"
   },
   "keywords": [
     "actions",
@@ -23,7 +23,7 @@
     "blog",
     "github pages"
   ],
-  "author": "Tibor Viragh <viraght@gmail.com>",
+  "author": "Kamran Ahmed <kamranahmed.se@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.8.2",
@@ -46,14 +46,14 @@
     "eslint": "^8.16.0",
     "eslint-plugin-github": "^4.3.6",
     "eslint-plugin-jest": "^26.2.2",
-    "jest": "^28.1.0",
+    "jest": "^28.1.3",
     "js-yaml": "^4.1.0",
     "prettier": "2.6.2",
     "ts-jest": "^28.0.3",
     "typescript": "^4.7.2"
   },
   "bugs": {
-    "url": "https://github.com/poseen/github-pages-blog-action/issues"
+    "url": "https://github.com/kamranahmedse/github-pages-blog-action/issues"
   },
-  "homepage": "https://github.com/poseen/github-pages-blog-action#readme"
+  "homepage": "https://github.com/kamranahmedse/github-pages-blog-action#readme"
 }
