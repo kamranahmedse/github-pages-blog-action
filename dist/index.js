@@ -360,7 +360,18 @@ function prepareTheme(configuration) {
         function prepareHome(posts) {
             return __awaiter(this, void 0, void 0, function* () {
                 (0, core_1.info)('Preparing homepage');
-                posts.sort((a, b) => (0, dayjs_1.default)(b.date).date() - (0, dayjs_1.default)(a.date).date());
+                posts.sort((a, b) => {
+                  const dateA = dayjs_1.default(a.date);
+                  const dateB = dayjs_1.default(b.date);
+
+                  // Compare the months first
+                  if (dateA.month() !== dateB.month()) {
+                    return dateB.month() - dateA.month();
+                  }
+
+                  // If the months are the same, compare the days
+                  return dateB.date() - dateA.date();
+                });
                 const groupedPosts = posts.reduce((aggMap, postItem) => {
                     const year = (0, dayjs_1.default)(postItem.date).format('YYYY');
                     aggMap.set(year, [...(aggMap.get(year) || []), postItem]);
